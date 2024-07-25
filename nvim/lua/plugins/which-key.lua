@@ -45,6 +45,11 @@ wk.register({
             ["8"] = { "<cmd>BufferLineGoToBuffer 8<cr>", "Go to buffer 8" },
             ["9"] = { "<cmd>BufferLineGoToBuffer 9<cr>", "Go to buffer 9" },
         },
+        g = {
+            name = "git",
+            b = { "<cmd>Git blame<cr>", "Git blame" },
+            l = { "<cmd>Git log<cr>", "Git log" },
+        },
         j = {
             name = "jump",
             o = { "<c-o>", "Jump back" },

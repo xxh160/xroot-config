@@ -39,6 +39,12 @@ require("lazy").setup({
         end,
     },
 
+    -- Git
+    {
+        "tpope/vim-fugitive",
+        event = "VeryLazy",
+    },
+
     -- Go to everywhere
     {
         "smoka7/hop.nvim",
@@ -277,4 +283,25 @@ require("lazy").setup({
         event = "VeryLazy",
         dependencies = "nvim-lua/plenary.nvim"
     },
+
+    -- Nice notify
+    {
+        "rcarriga/nvim-notify",
+        event = "VeryLazy",
+        config = function()
+            require("plugins.nvim-notify")
+        end,
+    },
+
+    -- Start screen
+    {
+        "goolord/alpha-nvim",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+            "nvim-telescope/telescope.nvim",
+        },
+        config = function()
+            require("plugins.alpha-nvim")
+        end,
+    }
 })

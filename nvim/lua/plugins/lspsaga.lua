@@ -22,7 +22,7 @@ lspsaga.setup({
 		num_showcut = true,
 		show_server_name = false,
 		keys = {
-			quit = "q",
+			quit = "<C-c>",
 			exec = "<cr>",
 		},
 	},

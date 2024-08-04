@@ -152,6 +152,7 @@ require("lazy").setup({
     },
 
     -- Telescope
+    -- Load telescope plugins in telescope.lua
     {
         "nvim-telescope/telescope.nvim", tag = '0.1.6',
         event = "VeryLazy",
@@ -160,6 +161,7 @@ require("lazy").setup({
             require("plugins.telescope")
         end,
     },
+    -- FZF: telescope.load_extension("fzf")
     {
         "nvim-telescope/telescope-fzf-native.nvim",
         event = "VeryLazy",
@@ -168,11 +170,32 @@ require("lazy").setup({
             return vim.fn.executable("make") == 1
         end,
     },
+    -- Lsp handlers: telescope.load_extension("lsp_handlers")
     {
         "gbrlsnchs/telescope-lsp-handlers",
         event = "VeryLazy",
         dependencies = "nvim-telescope/telescope.nvim",
     },
+    -- Emoji: telescope.load_extension("emoji")
+    {
+        "xiyaowong/telescope-emoji",
+        event = "VeryLazy",
+        dependencies = "nvim-telescope/telescope.nvim",
+    },
+    -- Ui-select: telescope.load_extension("ui-select")
+    {
+        "nvim-telescope/telescope-ui-select.nvim",
+        event = "VeryLazy",
+        dependencies = "nvim-telescope/telescope.nvim",
+    },
+    -- Workspaces: telescope.load_extension("workspaces")
+    {
+        "natecraddock/workspaces.nvim",
+        config = function()
+            require("plugins.workspaces")
+        end,
+    },
+    -- Clipboard: telescope.load_extension("neocllip")
     {
         "AckslD/nvim-neoclip.lua",
         event = "VeryLazy",
@@ -184,20 +207,7 @@ require("lazy").setup({
             require("plugins.neoclip")
         end,
     },
-    {
-        "dhruvmanila/browser-bookmarks.nvim",
-        version = '*',
-        event = "VeryLazy",
-        dependencies = "nvim-telescope/telescope.nvim",
-        config = function()
-            require("plugins.browser-bookmarks")
-        end,
-    },
-    {
-        "xiyaowong/telescope-emoji",
-        event = "VeryLazy",
-        dependencies = "nvim-telescope/telescope.nvim",
-    },
+
 
     -- Nvim tree
     {

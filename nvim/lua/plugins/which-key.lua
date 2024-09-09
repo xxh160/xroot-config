@@ -4,8 +4,8 @@ vim.g.maplocalleader = " "
 
 local status, wk = pcall(require, "which-key")
 if not status then
-	vim.notify("No which-key")
-	return
+    vim.notify("No which-key")
+    return
 end
 
 wk.setup({
@@ -17,85 +17,78 @@ wk.setup({
     },
 })
 
-wk.register({
-    ["<leader>"] = {
-        w = {
-            name = "window",
-            j = { "<c-w>j", "Move down" },
-            k = { "<c-w>k", "Move up" },
-            h = { "<c-w>h", "Move left" },
-            l = { "<c-w>l", "Move right" },
-            s = { "<cmd>split<cr>", "Split horizontally" },
-            v = { "<cmd>vsplit<cr>", "Split vertically" },
-            d = { "<cmd>close<cr>", "Close window" },
-            z = { "<cmd>Maximize<cr>", "Maximize window or not" },
-        },
-        b = {
-            name = "buffer",
-            h = { "<cmd>bprev<cr>", "Previous buffer" },
-            l = { "<cmd>bnext<cr>", "Next buffer" },
-            k = { "<cmd>bdelete<cr>", "Delete buffer" },
-            ["1"] = { "<cmd>BufferLineGoToBuffer 1<cr>", "Go to buffer 1" },
-            ["2"] = { "<cmd>BufferLineGoToBuffer 2<cr>", "Go to buffer 2" },
-            ["3"] = { "<cmd>BufferLineGoToBuffer 3<cr>", "Go to buffer 3" },
-            ["4"] = { "<cmd>BufferLineGoToBuffer 4<cr>", "Go to buffer 4" },
-            ["5"] = { "<cmd>BufferLineGoToBuffer 5<cr>", "Go to buffer 5" },
-            ["6"] = { "<cmd>BufferLineGoToBuffer 6<cr>", "Go to buffer 6" },
-            ["7"] = { "<cmd>BufferLineGoToBuffer 7<cr>", "Go to buffer 7" },
-            ["8"] = { "<cmd>BufferLineGoToBuffer 8<cr>", "Go to buffer 8" },
-            ["9"] = { "<cmd>BufferLineGoToBuffer 9<cr>", "Go to buffer 9" },
-        },
-        g = {
-            name = "git",
-            b = { "<cmd>Git blame<cr>", "Git blame" },
-            l = { "<cmd>Git log<cr>", "Git log" },
-        },
-        j = {
-            name = "jump",
-            o = { "<c-o>", "Jump back" },
-            i = { "<c-i>", "Jump forward" },
-            l = { "<cmd>HopLineStart<cr>", "Jump line" },
-            w = { "<cmd>HopWord<cr>", "Jump word" },
-            c = { "<cmd>HopChar1<cr>", "Jump char" },
-            f = { "]M", "Jump next method end" },
-            F = { "[m", "Jump prev method start" },
-        },
-        s = {
-            name = "search",
-            b = { "<cmd>Telescope buffers<cr>", "Search buffers" },
-            f = { "<cmd>Telescope find_files<cr>", "Search files" },
-            F = { "<cmd>Telescope git_files<cr>", "Search git files" },
-            g = { "<cmd>Telescope live_grep<cr>", "Live grep" },
-            G = { "<cmd>Telescope grep_string<cr>", "Live grep cursor word" },
-            h = { "<cmd>Telescope help_tags<cr>", "Search vim manual" },
-            j = { "<cmd>Telescope jumplist<cr>", "Search jumplist" },
-            e = { "<cmd>Telescope emoji<cr>", "Search emojis" },
-            c = { "<cmd>Telescope colorscheme<cr>", "Search colorschemes" },
-            m = { "<cmd>Telescope bookmarks<cr>", "Search bookmarks" },
-        },
-        o = {
-            name = "open",
-            p = { "<cmd>NvimTreeToggle<cr>", "Toggle nvim-tree" },
-            t = { "<cmd>Lspsaga term_toggle<cr>", "Toggle terminal" },
-            s = { "<cmd>SymbolsOutline<cr>", "Toggle symbols outline"},
-        },
-    }
-}, { mode = "n", silent = true })
+wk.add({
+    mode = { "n" },
+    silent = true,
 
+    { "<leader>b",  group = "buffer" },
+    { "<leader>bh", "<cmd>bprev<cr>",   desc = "Previous buffer" },
+    { "<leader>bk", "<cmd>bdelete<cr>", desc = "Delete buffer" },
+    { "<leader>bl", "<cmd>bnext<cr>",   desc = "Next buffer" },
+    {
+        "<leader>bb",
+        expand = function()
+            return require("which-key.extras").expand.buf()
+        end,
+        desc = "Go to buffer"
+    },
+
+    { "<leader>g",  group = "git" },
+    { "<leader>gb", "<cmd>Git blame<cr>",             desc = "Git blame" },
+    { "<leader>gl", "<cmd>Git log<cr>",               desc = "Git log" },
+
+    { "<leader>j",  group = "jump" },
+    { "<leader>jF", "[m",                             desc = "Jump prev method start" },
+    { "<leader>jc", "<cmd>HopChar1<cr>",              desc = "Jump char" },
+    { "<leader>jf", "]M",                             desc = "Jump next method end" },
+    { "<leader>ji", "<c-i>",                          desc = "Jump forward" },
+    { "<leader>jl", "<cmd>HopLineStart<cr>",          desc = "Jump line" },
+    { "<leader>jo", "<c-o>",                          desc = "Jump back" },
+    { "<leader>jw", "<cmd>HopWord<cr>",               desc = "Jump word" },
+
+    { "<leader>o",  group = "open" },
+    { "<leader>op", "<cmd>NvimTreeToggle<cr>",        desc = "Toggle nvim-tree" },
+    { "<leader>os", "<cmd>SymbolsOutline<cr>",        desc = "Toggle symbols outline" },
+    { "<leader>ot", "<cmd>Lspsaga term_toggle<cr>",   desc = "Toggle terminal" },
+
+    { "<leader>s",  group = "search" },
+    { "<leader>sF", "<cmd>Telescope git_files<cr>",   desc = "Search git files" },
+    { "<leader>sG", "<cmd>Telescope grep_string<cr>", desc = "Live grep cursor word" },
+    { "<leader>sb", "<cmd>Telescope buffers<cr>",     desc = "Search buffers" },
+    { "<leader>sc", "<cmd>Telescope colorscheme<cr>", desc = "Search colorschemes" },
+    { "<leader>se", "<cmd>Telescope emoji<cr>",       desc = "Search emojis" },
+    { "<leader>sf", "<cmd>Telescope find_files<cr>",  desc = "Search files" },
+    { "<leader>sg", "<cmd>Telescope live_grep<cr>",   desc = "Live grep" },
+    { "<leader>sh", "<cmd>Telescope help_tags<cr>",   desc = "Search vim manual" },
+    { "<leader>sj", "<cmd>Telescope jumplist<cr>",    desc = "Search jumplist" },
+    { "<leader>sm", "<cmd>Telescope bookmarks<cr>",   desc = "Search bookmarks" },
+
+    { "<leader>w",  group = "window" },
+    { "<leader>wd", "<cmd>close<cr>",                 desc = "Close window" },
+    { "<leader>wh", "<c-w>h",                         desc = "Move left" },
+    { "<leader>wj", "<c-w>j",                         desc = "Move down" },
+    { "<leader>wk", "<c-w>k",                         desc = "Move up" },
+    { "<leader>wl", "<c-w>l",                         desc = "Move right" },
+    { "<leader>ws", "<cmd>split<cr>",                 desc = "Split horizontally" },
+    { "<leader>wv", "<cmd>vsplit<cr>",                desc = "Split vertically" },
+    { "<leader>wz", "<cmd>Maximize<cr>",              desc = "Maximize window or not" },
+})
+
+-- Markdown actions
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "markdown",
     callback = function()
         local bufno = vim.api.nvim_get_current_buf()
-        wk.register({
-            ["<leader>"] = {
-                a = {
-                    name = "actions",
-                    p = { "<cmd>MarkdownPreview<cr>", "Markdown preview" },
-                    g = { "<cmd>GenTocGFM<cr>", "Generate toc" },
-                    r = { "<cmd>RenderMarkdownToggle<cr>", "Render markdown or not" },
-                },
-            },
-        }, { mode = "n", buffer = bufno, silent = true })
+        wk.add({
+            mode = { "n" },
+            buffer = bufno,
+            silent = true,
+
+            { "<leader>a",  group = "actions" },
+            { "<leader>ag", "<cmd>GenTocGFM<cr>",            desc = "Generate toc" },
+            { "<leader>ap", "<cmd>MarkdownPreview<cr>",      desc = "Markdown preview" },
+            { "<leader>ar", "<cmd>RenderMarkdownToggle<cr>", desc = "Render markdown or not" },
+        })
     end
 })
 
@@ -103,38 +96,31 @@ vim.api.nvim_create_autocmd("FileType", {
 local M = {}
 
 M.mapbuf_lsp = function(bufno)
-    wk.register({
-        ["<leader>"] = {
-            c = {
-                name = "code",
-                a = { "<cmd>Lspsaga code_action<cr>", "Code actions" },
-                h = { "<cmd>Lspsaga hover_doc<cr>", "Hover document" },
-                d = { "<cmd>Lspsaga goto_definition<cr>", "Go to definition" },
-                u = { "<cmd>Lspsaga finder def+ref<cr>", "Go to usage" },
-                r = { "<cmd>Lspsaga rename<cr>", "Rename" },
-                e = { "<cmd>Lspsaga show_line_diagnostics<cr>", "Show error" },
+    wk.add({
+        mode = { "n" },
+        buffer = bufno,
 
-                D = { "<cmd>lua vim.lsp.buf.declaration()<cr>", "Go to declaration" },
-                f = { "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", "Format current buffer" },
-                -- i = { "<cmd>lua vim.lsp.buf.implementation()<cr>", "Go to implementation" },
+        { "<leader>c",  group = "code" },
+        { "<leader>cD", "<cmd>lua vim.lsp.buf.declaration()<cr>",           desc = "Go to declaration" },
+        { "<leader>cE", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer error" },
+        { "<leader>ca", "<cmd>Lspsaga code_action<cr>",                     desc = "Code actions" },
+        { "<leader>cd", "<cmd>Lspsaga goto_definition<cr>",                 desc = "Go to definition" },
+        { "<leader>ce", "<cmd>Lspsaga show_line_diagnostics<cr>",           desc = "Show error" },
+        { "<leader>cf", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>",  desc = "Format current buffer" },
+        { "<leader>ch", "<cmd>Lspsaga hover_doc<cr>",                       desc = "Hover document" },
+        { "<leader>cq", "<cmd>Trouble qflist toggle<cr>",                   desc = "Quickfix list" },
+        { "<leader>cr", "<cmd>Lspsaga rename<cr>",                          desc = "Rename" },
+        { "<leader>cu", "<cmd>Lspsaga finder def+ref<cr>",                  desc = "Go to usage" },
 
-                E = { "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", "Buffer error" },
-                q = { "<cmd>Trouble qflist toggle<cr>", "Quickfix list" },
-            },
-            s = {
-                name = "search",
-                d = { "<cmd>Telescope diagnostics<cr>", "Search diagnostics" },
-                s = { "<cmd>Telescope lsp_document_symbols<cr>", "Search symbols in file" },
-                S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Search symbols in project" },
-            },
-            j = {
-                name = "jump",
-                e = { "<cmd>lua vim.diagnostic.goto_next()<cr>", "Jump next error" },
-                E = { "<cmd>lua vim.diagnostic.goto_prev()<cr>", "Jump prev error" },
-            },
-        },
-    }, { mode = "n", buffer = bufno, silent = true })
+        { "<leader>j",  group = "jump" },
+        { "<leader>jE", "<cmd>lua vim.diagnostic.goto_prev()<cr>",          desc = "Jump prev error" },
+        { "<leader>je", "<cmd>lua vim.diagnostic.goto_next()<cr>",          desc = "Jump next error" },
+
+        { "<leader>s",  group = "search" },
+        { "<leader>sS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Search symbols in project" },
+        { "<leader>sd", "<cmd>Telescope diagnostics<cr>",                   desc = "Search diagnostics" },
+        { "<leader>ss", "<cmd>Telescope lsp_document_symbols<cr>",          desc = "Search symbols in file" },
+    })
 end
 
 return M
-

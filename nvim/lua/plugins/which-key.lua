@@ -99,6 +99,7 @@ M.mapbuf_lsp = function(bufno)
     wk.add({
         mode = { "n" },
         buffer = bufno,
+        silent = true,
 
         { "<leader>c",  group = "code" },
         { "<leader>cD", "<cmd>lua vim.lsp.buf.declaration()<cr>",           desc = "Go to declaration" },

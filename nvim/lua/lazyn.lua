@@ -16,7 +16,6 @@ require("lazy").setup({
     -- Key mappings
     {
         "folke/which-key.nvim",
-        event = "VimEnter",
         dependencies = {
             "nvim-tree/nvim-web-devicons",
             "echasnovski/mini.icons",
@@ -45,6 +44,15 @@ require("lazy").setup({
         event = "VeryLazy",
     },
 
+    -- Auto pair
+    {
+        "windwp/nvim-autopairs",
+        event = "InsertEnter",
+        config = true
+        -- use opts = {} for passing setup options
+        -- this is equivalent to setup({}) function
+    },
+
     -- Go to everywhere
     {
         "smoka7/hop.nvim",
@@ -64,7 +72,7 @@ require("lazy").setup({
         end
     },
 
-    -- Symbols outline
+    -- Symbols outline, a tree like view for symbols
     {
         "simrat39/symbols-outline.nvim",
         event = "VeryLazy",
@@ -88,7 +96,7 @@ require("lazy").setup({
         "hrsh7th/nvim-cmp",
         event = "VeryLazy",
         dependencies = {
-		    "onsails/lspkind.nvim",
+            "onsails/lspkind.nvim",
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
@@ -100,7 +108,7 @@ require("lazy").setup({
         end,
     },
 
-	-- Code snippet engine
+    -- Code snippet engine
     {
         "L3MON4D3/LuaSnip",
         -- Follow latest release
@@ -154,7 +162,8 @@ require("lazy").setup({
     -- Telescope
     -- Load telescope plugins in telescope.lua
     {
-        "nvim-telescope/telescope.nvim", tag = '0.1.6',
+        "nvim-telescope/telescope.nvim",
+        tag = '0.1.6',
         event = "VeryLazy",
         dependencies = { 'nvim-lua/plenary.nvim' },
         config = function()
@@ -266,12 +275,11 @@ require("lazy").setup({
     },
     {
         "mzlogin/vim-markdown-toc",
-        -- Load on VeryLazy event
         event = "VeryLazy",
     },
     {
         "MeanderingProgrammer/markdown.nvim",
-        event = "VeryLazy",
+        event = "FileType markdown",
         -- Only needed if you have another plugin named markdown.nvim
         name = "render-markdown",
         dependencies = "nvim-treesitter/nvim-treesitter",

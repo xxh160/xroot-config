@@ -24,6 +24,8 @@ mason_lsp.setup({
         "lua_ls",
         -- YAML
         "yamlls",
+        -- ASM
+        "asm_lsp",
     },
     automatic_installation = true,
 })

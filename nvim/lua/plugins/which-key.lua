@@ -65,13 +65,21 @@ wk.add({
 
     { "<leader>w",  group = "window" },
     { "<leader>wd", "<cmd>close<cr>",                 desc = "Close window" },
-    { "<leader>wh", "<c-w>h",                         desc = "Move left" },
-    { "<leader>wj", "<c-w>j",                         desc = "Move down" },
-    { "<leader>wk", "<c-w>k",                         desc = "Move up" },
-    { "<leader>wl", "<c-w>l",                         desc = "Move right" },
+    { "<leader>wh", "<c-w>h",                         desc = "Window left" },
+    { "<leader>wj", "<c-w>j",                         desc = "Window down" },
+    { "<leader>wk", "<c-w>k",                         desc = "Window up" },
+    { "<leader>wl", "<c-w>l",                         desc = "Window right" },
     { "<leader>ws", "<cmd>split<cr>",                 desc = "Split horizontally" },
     { "<leader>wv", "<cmd>vsplit<cr>",                desc = "Split vertically" },
     { "<leader>wz", "<cmd>Maximize<cr>",              desc = "Maximize window or not" },
+}, {
+    mode = { "i" },
+    silent = true,
+
+    { "<c-l>", "<c-o>l", desc = "Cursor right" },
+    { "<c-h>", "<c-o>h", desc = "Cursor left" },
+    { "<c-k>", "<c-o>k", desc = "Cursor up" },
+    { "<c-j>", "<c-o>j", desc = "Cursor down" },
 })
 
 -- Markdown actions
@@ -113,11 +121,9 @@ M.mapbuf_lsp = function(bufno)
         { "<leader>cr", "<cmd>Lspsaga rename<cr>",                          desc = "Rename" },
         { "<leader>cu", "<cmd>Lspsaga finder def+ref<cr>",                  desc = "Go to usage" },
 
-        { "<leader>j",  group = "jump" },
         { "<leader>jE", "<cmd>lua vim.diagnostic.goto_prev()<cr>",          desc = "Jump prev error" },
         { "<leader>je", "<cmd>lua vim.diagnostic.goto_next()<cr>",          desc = "Jump next error" },
 
-        { "<leader>s",  group = "search" },
         { "<leader>sS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Search symbols in project" },
         { "<leader>sd", "<cmd>Telescope diagnostics<cr>",                   desc = "Search diagnostics" },
         { "<leader>ss", "<cmd>Telescope lsp_document_symbols<cr>",          desc = "Search symbols in file" },

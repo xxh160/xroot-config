@@ -6,7 +6,9 @@ end
 
 md.setup({
     -- Whether Markdown should be rendered by default or not
-    start_enabled = false,
+    enabled = false,
     -- Whether LaTeX should be rendered, mainly used for health check
-    latex_enabled = false,
+    latex = {
+        enabled = false
+    }
 })

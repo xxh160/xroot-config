@@ -26,6 +26,12 @@ mason_lsp.setup({
         "yamlls",
         -- ASM
         "asm_lsp",
+        -- Typescript
+        "ts_ls",
+        -- CSS
+        "cssls",
+        -- Tailwindcss
+        "tailwindcss",
     },
     automatic_installation = true,
 })
@@ -106,6 +112,23 @@ mason_lsp.setup_handlers({
                 },
             },
             on_attach = attach_func,
+        })
+    end,
+
+    ["jdtls"] = function()
+        nvim_lsp.jdtls.setup({
+            cmd_env = {
+                JAVA_HOME = "/usr/lib/jvm/java-21-openjdk",
+            },
+            capabilities = capabilities,
+            on_attach = attach_func,
+            root_dir = nvim_lsp.util.root_pattern(
+                ".git",
+                "pom.xml",
+                "build.gradle",
+                "settings.gradle",
+                "src"
+            ) or vim.fn.getcwd(),
         })
     end,
 })

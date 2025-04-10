@@ -25,9 +25,11 @@ vim.opt.smartcase = true
 
 -- Show line number
 vim.opt.number = true
+vim.opt.relativenumber = true
 -- Cursorline
 vim.opt.cursorline = true
-
+-- When and how to draw the signcolumn
+vim.opt.signcolumn = "yes"
 
 -- Put the new window below the current one
 vim.opt.splitbelow = true
@@ -77,5 +79,17 @@ vim.opt.pumheight = 10
 -- in the terminal
 vim.opt.termguicolors = true
 
--- When and how to draw the signcolumn
-vim.opt.signcolumn = "yes"
+-- Neovide only
+if vim.g.neovide then
+    -- vim.o.guifont = "Hack Nerd Font,Source Han Sans CN:h14"
+    -- Chinese font: LXGW WenKai, Source Han Sans CN, LXGW Neo XiHei, Sarasa Mono SC, HarmonyOS Sans SC
+    vim.opt.guifont = "Hack Nerd Font,HarmonyOS Sans SC:h14"
+    vim.opt.linespace = -1
+    vim.g.neovide_scale_factor = 0.85
+    vim.g.neovide_fullscreen = true
+
+    vim.g.neovide_padding_top = 0
+    vim.g.neovide_padding_bottom = 0
+    vim.g.neovide_padding_right = 0
+    vim.g.neovide_padding_left = 0
+end

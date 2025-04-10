@@ -13,6 +13,15 @@ end
 vim.opt.rtp:prepend(lazy_path)
 
 require("lazy").setup({
+    -- Nice notify
+    {
+        "rcarriga/nvim-notify",
+        event = "VeryLazy",
+        config = function()
+            require("plugins.nvim-notify")
+        end,
+    },
+
     -- Key mappings
     {
         "folke/which-key.nvim",
@@ -25,17 +34,70 @@ require("lazy").setup({
         end,
     },
 
+    -- Scrollbar
+    {
+        "lewis6991/satellite.nvim",
+        config = function()
+            require("plugins.satellite")
+        end,
+    },
+
+    -- Dims inactive portions of the code
+    {
+        "folke/twilight.nvim",
+        config = function()
+            require("plugins.twilight")
+        end,
+    },
+
+    -- Focus!
+    {
+        "folke/zen-mode.nvim",
+        dependencies = {
+            "folke/twilight.nvim",
+        },
+        config = function()
+            require("plugins.zen-mode")
+        end,
+    },
+
     -- Color schemes
     {
         "catppuccin/nvim",
         name = "catppuccin",
-        priority = 1000,
+        lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+        priority = 1000, -- make sure to load this before all the other start plugins
     },
     {
         "navarasu/onedark.nvim",
+        lazy = false,
+        priority = 1000,
         config = function()
             require("plugins.onedark")
         end,
+    },
+    {
+        'projekt0n/github-nvim-theme',
+        name = 'github-theme',
+        lazy = false,
+        priority = 1000,
+    },
+    {
+        "rose-pine/neovim",
+        name = "rose-pine",
+        config = function()
+            require("plugins.rose-pine")
+        end
+    },
+
+    -- Latex
+    {
+        "lervag/vimtex",
+        lazy = false, -- we don't want to lazy load VimTeX
+        -- tag = "v2.15", -- uncomment to pin to a specific release
+        init = function()
+            require("plugins.vimtex")
+        end
     },
 
     -- Git
@@ -76,9 +138,7 @@ require("lazy").setup({
     {
         "simrat39/symbols-outline.nvim",
         event = "VeryLazy",
-        config = function()
-            require("plugins.symbols-outline")
-        end
+        opts = {}
     },
 
     -- Treesitter
@@ -118,6 +178,10 @@ require("lazy").setup({
         build = "make install_jsregexp"
     },
 
+    {
+        "rainbowhxch/accelerated-jk.nvim",
+    },
+
     -- Lsp
     {
         "neovim/nvim-lspconfig",
@@ -142,7 +206,7 @@ require("lazy").setup({
     },
     {
         "nvimdev/lspsaga.nvim",
-        event = "LspAttach",
+        -- event = "LspAttach",
         config = function()
             require("plugins.lspsaga")
         end,
@@ -151,12 +215,19 @@ require("lazy").setup({
             "nvim-tree/nvim-web-devicons",
         }
     },
+    -- Dimming the highlights of unused things
     {
         "zbirenbaum/neodim",
         event = "LspAttach",
         config = function()
             require("plugins.neodim")
         end,
+    },
+    -- Extensible UI for Neovim notifications and LSP progress messages
+    {
+        "j-hui/fidget.nvim",
+        opts = {
+        },
     },
 
     -- Telescope
@@ -209,7 +280,7 @@ require("lazy").setup({
         "AckslD/nvim-neoclip.lua",
         event = "VeryLazy",
         dependencies = {
-            { "kkharji/sqlite.lua", module = "sqlite" },
+            { "kkharji/sqlite.lua",           module = "sqlite" },
             { "nvim-telescope/telescope.nvim" },
         },
         config = function()
@@ -257,6 +328,15 @@ require("lazy").setup({
         end
     },
 
+    -- Marks
+    {
+        "chentoast/marks.nvim",
+        event = "VeryLazy",
+        config = function()
+            require("plugins.marks")
+        end
+    },
+
     -- Indent lines
     {
         "lukas-reineke/indent-blankline.nvim",
@@ -282,7 +362,7 @@ require("lazy").setup({
         event = "FileType markdown",
         -- Only needed if you have another plugin named markdown.nvim
         name = "render-markdown",
-        dependencies = "nvim-treesitter/nvim-treesitter",
+        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
         config = function()
             require("plugins.render-markdown")
         end,
@@ -300,15 +380,6 @@ require("lazy").setup({
         "nvimtools/none-ls.nvim",
         event = "VeryLazy",
         dependencies = "nvim-lua/plenary.nvim"
-    },
-
-    -- Nice notify
-    {
-        "rcarriga/nvim-notify",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.nvim-notify")
-        end,
     },
 
     -- Start screen

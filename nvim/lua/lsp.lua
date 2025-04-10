@@ -35,14 +35,11 @@ vim.diagnostic.config({
     },
 })
 
--- Set the popup window border
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = "rounded",
-})
+-- Hover
+vim.lsp.buf.hover({ border = "rounded" })
 
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = "rounded",
-})
+-- Function signature help
+vim.lsp.buf.signature_help({ border = "rounded" })
 
 -- Log level
 vim.lsp.set_log_level("info")

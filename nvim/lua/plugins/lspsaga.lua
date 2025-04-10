@@ -36,8 +36,8 @@ lspsaga.setup({
         enable = true,
         enable_in_insert = true,
         sign = true,
-        sign_priority = 40,
-        virtual_text = true,
+        sign_priority = 20,
+        virtual_text = false,
     },
     rename = {
         quit = "<C-c>",

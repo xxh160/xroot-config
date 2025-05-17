@@ -32,6 +32,8 @@ mason_lsp.setup({
         "cssls",
         -- Tailwindcss
         "tailwindcss",
+        -- Latex
+        "texlab",
     },
     automatic_installation = true,
 })
@@ -129,6 +131,47 @@ mason_lsp.setup_handlers({
                 "settings.gradle",
                 "src"
             ) or vim.fn.getcwd(),
+        })
+    end,
+
+    ["texlab"] = function()
+        nvim_lsp.texlab.setup({
+            capabilities = capabilities,
+            on_attach = attach_func,
+            settings = {
+                texlab = {
+                    build = {
+                        executable = "latexmk",
+                        args = {
+                            "-xelatex",
+                            "-synctex=1",
+                            "-interaction=nonstopmode",
+                            "-file-line-error",
+                            "%f"
+                        },
+                        forwardSearchAfter = false,
+                        -- Use vimtex
+                        onSave = false,
+                    },
+                    forwardSearch = {
+                        executable = "okular",
+                        args = {
+                            "--unique",
+                            "file:%p#src:%l%f"
+                        },
+                    },
+                    auxDirectory = ".",
+                    bibtexFormatter = "texlab",
+                    chktex = {
+                        onOpenAndSave = true
+                    },
+                    diagnosticsDelay = 300,
+                    latexFormatter = "latexindent",
+                    latexindent = {
+                        modifyLineBreaks = true
+                    },
+                },
+            },
         })
     end,
 })

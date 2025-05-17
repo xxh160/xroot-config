@@ -30,7 +30,7 @@ local function pad_ascii(ascii, pad_top, pad_bottom)
     return vim.list_extend(vim.list_extend(top, ascii), bottom)
 end
 
-dashboard.section.header.val = pad_ascii(header_ascii, 5, 5)
+dashboard.section.header.val = pad_ascii(header_ascii, 5, 4)
 
 dashboard.section.buttons.val = {
     dashboard.button("w", "  > Open Workspace", "<cmd>WorkspacesOpen<cr>"),
@@ -39,7 +39,7 @@ dashboard.section.buttons.val = {
     dashboard.button("r", "  > Recent Files", "<cmd>Telescope oldfiles<cr>"),
     dashboard.button("n", "  > New File", "<cmd>enew<cr>"),
     dashboard.button("g", "  > Live Grep", "<cmd>Telescope live_grep<cr>"),
-    dashboard.button("e", "  > Edit Config", "<cmd>e $MYVIMRC<cr>"),
+    dashboard.button("e", "  > Edit Config", "<cmd>WorkspacesOpen nvim<cr>"),
     dashboard.button("m", "  > Mason", "<cmd>Mason<cr>"),
     dashboard.button("l", "󰒲  > Lazy Status", "<cmd>Lazy<cr>"),
     dashboard.button("q", "󰙧  > Quit NVIM", "<cmd>qa<cr>"),
@@ -60,7 +60,7 @@ vim.api.nvim_create_autocmd("User", {
         vim.cmd("set showtabline=0")
         if vim.g.neovide then
             saved_scale = vim.g.neovide_scale_factor or 1.0
-            vim.g.neovide_scale_factor = 1.1
+            vim.g.neovide_scale_factor = 1.0
         end
     end,
 })

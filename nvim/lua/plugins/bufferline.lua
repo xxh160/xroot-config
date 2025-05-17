@@ -1,15 +1,15 @@
 local status, bufferline = pcall(require, "bufferline")
 if not status then
     vim.notify("No bufferline")
-  return
+    return
 end
 
 -- bufferline.lua
 bufferline.setup({
     options = {
         indicator = {
-            -- Split line 
-            icon = '▎', 
+            -- Split line
+            icon = '▎',
             style = 'underline',
         },
         buffer_close_icon = '󰅖',
@@ -18,7 +18,7 @@ bufferline.setup({
         offsets = {
             {
                 filetype = "NvimTree",
-                text = "File Explorer" ,
+                text = "File Explorer",
                 text_align = "left",
                 separator = true,
             }

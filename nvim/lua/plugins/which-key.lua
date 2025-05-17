@@ -1,7 +1,3 @@
--- Leader
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 local status, wk = pcall(require, "which-key")
 if not status then
     vim.notify("No which-key")
@@ -21,22 +17,26 @@ wk.add({
     mode = { "n" },
     silent = true,
 
-
     { "j",               "<Plug>(accelerated_jk_gj)",      desc = "Faster j" },
     { "k",               "<Plug>(accelerated_jk_gk)",      desc = "Faster k" },
 
+    { "<leader><space>", "<cmd>Telescope find_files<cr>",  desc = "Files" },
     { "<leader>?",       "<cmd>Telescope help_tags<cr>",   desc = "Vim manuals" },
     { "<leader>/",       "<cmd>Telescope live_grep<cr>",   desc = "Live grep (global)" },
     { "<leader>*",       "<cmd>Telescope grep_string<cr>", desc = "Live grep (cursor word)" },
-    { "<leader><space>", "<cmd>Telescope find_files<cr>",  desc = "Files" },
     { "<leader>m",       "<cmd>Telescope marks<cr>",       desc = "Bookmarks" },
+    { "<leader>k",       "<cmd>Telescope keymaps<cr>",     desc = "Keymaps" },
 
     { "<leader>b",       group = "buffer" },
     { "<leader>bb",      "<cmd>Telescope buffers<cr>",     desc = "Search buffers" },
     { "<leader>bh",      "<cmd>bprev<cr>",                 desc = "Previous buffer" },
     { "<leader>bl",      "<cmd>bnext<cr>",                 desc = "Next buffer" },
     { "<leader>bk",      "<cmd>bdelete<cr>",               desc = "Delete buffer" },
+    { "<leader>bn",      "<cmd>enew<cr>",                  desc = "New empty buffer" },
 
+    { "<leader>f",       group = "file" },
+    { "<leader>ff",      "<cmd>Telescope find_files<cr>",  desc = "Find files" },
+    { "<leader>fr",      "<cmd>Telescope oldfiles<cr>",    desc = "Recent files" },
 
     { "<leader>g",       group = "git" },
     { "<leader>gf",      "<cmd>Telescope git_files<cr>",   desc = "Git files" },
@@ -44,20 +44,23 @@ wk.add({
     { "<leader>gl",      "<cmd>Git log<cr>",               desc = "Git log" },
 
     { "<leader>j",       group = "jump" },
-    { "<leader>jf",      "]M",                             desc = "Jump next method end" },
-    { "<leader>jF",      "[m",                             desc = "Jump prev method start" },
     { "<leader>ji",      "<c-i>",                          desc = "Jump forward" },
     { "<leader>jo",      "<c-o>",                          desc = "Jump back" },
     { "<leader>jt",      "<c-]>",                          desc = "Jump tag" },
     { "<leader>jc",      "<cmd>HopChar1<cr>",              desc = "Jump char" },
     { "<leader>jl",      "<cmd>HopLineStart<cr>",          desc = "Jump line" },
     { "<leader>jw",      "<cmd>HopWord<cr>",               desc = "Jump word" },
-    { "<leader>jj",      "<cmd>Telescope jumplist<cr>",    desc = "Jumplist" },
+    { "<leader>jj",      "<cmd>Telescope jumplist<cr>",    desc = "Jump list" },
 
     { "<leader>o",       group = "open" },
     { "<leader>op",      "<cmd>NvimTreeToggle<cr>",        desc = "Toggle nvim-tree" },
     { "<leader>os",      "<cmd>SymbolsOutline<cr>",        desc = "Toggle symbols outline" },
-    { "<leader>ot",      "<cmd>Lspsaga term_toggle<cr>",   desc = "Toggle terminal" },
+    { "<leader>ot",      "<cmd>ToggleTerm<cr>",            desc = "Toggle terminal" },
+
+    { "<leader>p",       group = "project" },
+    { "<leader>pa",      "<cmd>WorkspacesAdd<cr>",         desc = "Add project to list" },
+    { "<leader>pp",      "<cmd>WorkspacesOpen<cr>",        desc = "Choose project" },
+    { "<leader>pd",      "<cmd>WorkspacesRemove<cr>",      desc = "Delete project from list" },
 
     { "<leader>s",       group = "system" },
     { "<leader>sd",      "<cmd>Twilight<cr>",              desc = "Toggle dim mode" },
@@ -84,6 +87,44 @@ wk.add({
     { "<c-j>", "<c-o>j", desc = "Cursor down" },
 })
 
+-- Latex actions
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "tex",
+    callback = function()
+        local bufno = vim.api.nvim_get_current_buf()
+        wk.add({
+            mode = { "n" },
+            buffer = bufno,
+            silent = true,
+
+            { "<leader>a",  group = "actions-latex" },
+
+            { "<leader>al", "<Plug>(vimtex-compile)",             desc = "Compile" },
+            { "<leader>aL", "<Plug>(vimtex-compile-selected)",    desc = "Compile selected" },
+            { "<leader>ak", "<Plug>(vimtex-stop)",                desc = "Stop compile" },
+            { "<leader>aK", "<Plug>(vimtex-stop-all)",            desc = "Stop all compiles" },
+            { "<leader>av", "<Plug>(vimtex-view)",                desc = "View PDF" },
+            { "<leader>ae", "<Plug>(vimtex-errors)",              desc = "Show errors" },
+            { "<leader>ao", "<Plug>(vimtex-compile-output)",      desc = "Compile output" },
+            { "<leader>as", "<Plug>(vimtex-status)",              desc = "Status" },
+            { "<leader>aS", "<Plug>(vimtex-status-all)",          desc = "Status all" },
+            { "<leader>ac", "<Plug>(vimtex-clean)",               desc = "Clean aux" },
+            { "<leader>aC", "<Plug>(vimtex-clean-full)",          desc = "Clean all" },
+            { "<leader>am", "<Plug>(vimtex-imaps-list)",          desc = "Insert mappings" },
+            { "<leader>ax", "<Plug>(vimtex-reload)",              desc = "Reload VimTeX" },
+            { "<leader>aX", "<Plug>(vimtex-reload-state)",        desc = "Reload state" },
+            { "<leader>at", "<Plug>(vimtex-toc-open)",            desc = "TOC open" },
+            { "<leader>aT", "<Plug>(vimtex-toc-toggle)",          desc = "TOC toggle" },
+            { "<leader>aq", "<Plug>(vimtex-log)",                 desc = "View log" },
+            { "<leader>ai", "<Plug>(vimtex-info)",                desc = "VimTeX Info" },
+            { "<leader>aI", "<Plug>(vimtex-info-full)",           desc = "All Info" },
+            { "<leader>ar", "<Plug>(vimtex-reverse-search)",      desc = "Reverse search" },
+            { "<leader>an", "<Plug>(vimtex-toggle-main)",         desc = "Toggle main file" },
+            { "<leader>aa", "<Plug>(vimtex-context-menu)",        desc = "Context menu" },
+        })
+    end
+})
+
 -- Markdown actions
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "markdown",
@@ -94,7 +135,7 @@ vim.api.nvim_create_autocmd("FileType", {
             buffer = bufno,
             silent = true,
 
-            { "<leader>a",  group = "actions" },
+            { "<leader>a",  group = "actions-md" },
             { "<leader>ag", "<cmd>GenTocGFM<cr>",                 desc = "Generate toc" },
             { "<leader>ap", "<cmd>MarkdownPreview<cr>",           desc = "Markdown preview" },
             { "<leader>ar", "<cmd>RenderMarkdown buf_toggle<cr>", desc = "Render markdown or not" },

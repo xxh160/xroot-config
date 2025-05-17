@@ -5,23 +5,28 @@ if not status then
 end
 
 ts.setup({
-	extensions = {
-		fzf = {
-			-- False will only do exact matching
-			fuzzy = true,
-			-- Override the generic sorter with fzf
-			override_generic_sorter = true,
-			-- Override the file sorter with fzf
-			override_file_sorter = true,
-			-- Available: "ignore_case", "respect_case"
-			case_mode = "respect_case",
-		},
-		emoji = {
-			action = function(emoji)
-				vim.api.nvim_put({ emoji.value }, "c", false, true)
-			end,
-		},
-	},
+    extensions = {
+        fzf = {
+            -- False will only do exact matching
+            fuzzy = true,
+            -- Override the generic sorter with fzf
+            override_generic_sorter = true,
+            -- Override the file sorter with fzf
+            override_file_sorter = true,
+            -- Available: "ignore_case", "respect_case"
+            case_mode = "respect_case",
+        },
+        emoji = {
+            action = function(emoji)
+                vim.api.nvim_put({ emoji.value }, "c", false, true)
+            end,
+        },
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown {
+                -- even more opts
+            }
+        }
+    },
 })
 
 ts.load_extension("fzf")
@@ -30,3 +35,4 @@ ts.load_extension("lsp_handlers")
 ts.load_extension("emoji")
 ts.load_extension("ui-select")
 ts.load_extension("workspaces")
+ts.load_extension("persisted")

@@ -17,21 +17,40 @@ require("lazy").setup({
     {
         "rcarriga/nvim-notify",
         event = "VeryLazy",
+        priority = 1000,
         config = function()
             require("plugins.nvim-notify")
         end,
     },
 
-    -- Key mappings
+    -- Color schemes
     {
-        "folke/which-key.nvim",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-            "echasnovski/mini.icons",
-        },
+        "catppuccin/nvim",
+        name = "catppuccin",
+        lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+        priority = 1000, -- make sure to load this before all the other start plugins
+    },
+    {
+        "navarasu/onedark.nvim",
+        lazy = false,
+        priority = 1000,
         config = function()
-            require("plugins.which-key")
+            require("plugins.onedark")
         end,
+    },
+    {
+        'projekt0n/github-nvim-theme',
+        name = 'github-theme',
+        lazy = false,
+        priority = 1000,
+    },
+    {
+        "rose-pine/neovim",
+        name = "rose-pine",
+        priority = 1000,
+        config = function()
+            require("plugins.rose-pine")
+        end
     },
 
     -- Scrollbar
@@ -61,35 +80,6 @@ require("lazy").setup({
         end,
     },
 
-    -- Color schemes
-    {
-        "catppuccin/nvim",
-        name = "catppuccin",
-        lazy = false,    -- make sure we load this during startup if it is your main colorscheme
-        priority = 1000, -- make sure to load this before all the other start plugins
-    },
-    {
-        "navarasu/onedark.nvim",
-        lazy = false,
-        priority = 1000,
-        config = function()
-            require("plugins.onedark")
-        end,
-    },
-    {
-        'projekt0n/github-nvim-theme',
-        name = 'github-theme',
-        lazy = false,
-        priority = 1000,
-    },
-    {
-        "rose-pine/neovim",
-        name = "rose-pine",
-        config = function()
-            require("plugins.rose-pine")
-        end
-    },
-
     -- Latex
     {
         "lervag/vimtex",
@@ -104,15 +94,6 @@ require("lazy").setup({
     {
         "tpope/vim-fugitive",
         event = "VeryLazy",
-    },
-
-    -- Auto pair
-    {
-        "windwp/nvim-autopairs",
-        event = "InsertEnter",
-        config = true
-        -- use opts = {} for passing setup options
-        -- this is equivalent to setup({}) function
     },
 
     -- Go to everywhere
@@ -149,6 +130,38 @@ require("lazy").setup({
         config = function()
             require("plugins.nvim-treesitter")
         end,
+    },
+    -- Debug
+    {
+        "nvim-treesitter/playground",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+    },
+    -- Syntax aware text-objects, select, move, swap, and peek support
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+    },
+    -- Shows the context of the currently visible buffer contents
+    {
+        "nvim-treesitter/nvim-treesitter-context",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+        config = function()
+            require("plugins.nvim-treesitter-context")
+        end,
+    },
+    -- Auto tag
+    {
+        "windwp/nvim-ts-autotag",
+        event = "InsertEnter",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+        opts = {}
+    },
+
+    -- Auto tag
+    {
+        "windwp/nvim-autopairs",
+        event = "InsertEnter",
+        opts = {}
     },
 
     -- Complete
@@ -226,8 +239,9 @@ require("lazy").setup({
     -- Extensible UI for Neovim notifications and LSP progress messages
     {
         "j-hui/fidget.nvim",
-        opts = {
-        },
+        config = function()
+            require("plugins.fidget")
+        end
     },
 
     -- Telescope
@@ -268,9 +282,23 @@ require("lazy").setup({
         event = "VeryLazy",
         dependencies = "nvim-telescope/telescope.nvim",
     },
+    -- Sessions: telescope.load_extension("persisted")
+    {
+        "olimorris/persisted.nvim",
+        -- Ensure the plugin loads only when a buffer has been loaded
+        event = "BufReadPre",
+        dependencies = "nvim-telescope/telescope.nvim",
+        config = function()
+            require("plugins.persisted")
+        end,
+    },
     -- Workspaces: telescope.load_extension("workspaces")
     {
         "natecraddock/workspaces.nvim",
+        dependencies = {
+            "olimorris/persisted.nvim",
+            "nvim-telescope/telescope.nvim"
+        },
         config = function()
             require("plugins.workspaces")
         end,
@@ -392,5 +420,26 @@ require("lazy").setup({
         config = function()
             require("plugins.alpha-nvim")
         end,
-    }
+    },
+
+    -- ToggleTerm
+    {
+        "akinsho/toggleterm.nvim",
+        version = "*",
+        config = function()
+            require("plugins.toggleterm")
+        end,
+    },
+
+    -- Key mappings
+    {
+        "folke/which-key.nvim",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+            "echasnovski/mini.icons",
+        },
+        config = function()
+            require("plugins.which-key")
+        end,
+    },
 })

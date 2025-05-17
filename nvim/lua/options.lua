@@ -79,13 +79,16 @@ vim.opt.pumheight = 10
 -- in the terminal
 vim.opt.termguicolors = true
 
+-- Session options
+vim.o.sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals,localoptions"
+
 -- Neovide only
 if vim.g.neovide then
     -- vim.o.guifont = "Hack Nerd Font,Source Han Sans CN:h14"
     -- Chinese font: LXGW WenKai, Source Han Sans CN, LXGW Neo XiHei, Sarasa Mono SC, HarmonyOS Sans SC
     vim.opt.guifont = "Hack Nerd Font,HarmonyOS Sans SC:h14"
     vim.opt.linespace = -1
-    vim.g.neovide_scale_factor = 0.85
+    vim.g.neovide_scale_factor = 1.0
     vim.g.neovide_fullscreen = true
 
     vim.g.neovide_padding_top = 0

@@ -42,4 +42,4 @@ vim.lsp.buf.hover({ border = "rounded" })
 vim.lsp.buf.signature_help({ border = "rounded" })
 
 -- Log level
-vim.lsp.set_log_level("info")
+vim.lsp.set_log_level("WARN")

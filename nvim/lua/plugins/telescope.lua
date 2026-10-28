@@ -31,7 +31,6 @@ ts.setup({
 
 ts.load_extension("fzf")
 ts.load_extension("neoclip")
-ts.load_extension("lsp_handlers")
 ts.load_extension("emoji")
 ts.load_extension("ui-select")
 ts.load_extension("workspaces")

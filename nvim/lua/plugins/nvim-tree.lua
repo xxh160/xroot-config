@@ -12,7 +12,7 @@ local function nvim_tree_on_attach(bufno)
     end
 
     -- Default mappings
-    api.config.mappings.default_on_attach(bufno)
+    api.map.on_attach.default(bufno)
 
     -- Custom mappings
     vim.keymap.set('n', 'U', api.tree.change_root_to_parent, opts('Root Up'))
@@ -20,7 +20,7 @@ local function nvim_tree_on_attach(bufno)
 end
 
 nvim_tree.setup({
-    sort_by = "case_sensitive",
+    sort = { sorter = "case_sensitive" },
     -- Show git status
     git = {
         enable = true,
@@ -42,7 +42,7 @@ nvim_tree.setup({
     },
     update_focused_file = {
         enable = true,
-        update_cwd = true,
+        update_root = true,
     },
     renderer = {
         root_folder_label = ":t",

@@ -13,7 +13,6 @@ lspsaga.setup({
         expand = "⊞",
         collapse = "⊟",
         code_action = "💡",
-        actionfix = " ",
         lines = { "┗", "┣", "┃", "━", "┏" },
         kind = nil,
         imp_sign = "󰳛 ",
@@ -25,7 +24,7 @@ lspsaga.setup({
         }
     },
     code_action = {
-        num_showcut = true,
+        num_shortcut = true,
         show_server_name = false,
         keys = {
             quit = "<C-c>",
@@ -40,10 +39,7 @@ lspsaga.setup({
         virtual_text = false,
     },
     rename = {
-        quit = "<C-c>",
-        exec = "<cr>",
-        mark = "x",
-        confirm = "<cr>",
+        keys = { quit = "<C-c>", exec = "<cr>", select = "x" },
         in_select = true,
     },
     symbol_in_winbar = {
@@ -52,7 +48,6 @@ lspsaga.setup({
         hide_keyword = true,
         show_file = true,
         folder_level = 2,
-        respect_root = false,
         color_mode = true,
         left_offset = 5,
     },

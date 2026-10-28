@@ -1,177 +1,20 @@
-local status_mason_lsp, mason_lsp = pcall(require, "mason-lspconfig")
-if not status_mason_lsp then
-    vim.notify("No mason-lspconfig")
-    return
-end
-
-mason_lsp.setup({
-    ensure_installed = {
-        -- C/C++
-        "clangd",
-        -- Python
-        "pylsp",
-        -- Make
-        "autotools_ls",
-        -- Markdown
-        "marksman",
-        -- Java
-        "jdtls",
-        -- Bash
-        "bashls",
-        -- Vim
-        "vimls",
-        -- Lua
-        "lua_ls",
-        -- YAML
-        "yamlls",
-        -- ASM
-        "asm_lsp",
-        -- Typescript
-        "ts_ls",
-        -- CSS
-        "cssls",
-        -- Tailwindcss
-        "tailwindcss",
-        -- Latex
-        "texlab",
-    },
-    automatic_installation = true,
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+vim.lsp.config("*", { capabilities = capabilities })
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("xroot-lsp", { clear = true }),
+    callback = function(event)
+        require("plugins.which-key").mapbuf_lsp(event.buf)
+    end,
 })
-
--- Setup capabilities
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-local status_cmp_nvim_lsp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if not status_cmp_nvim_lsp then
-    vim.notify("No cmp-nvim-lsp")
-    return
-end
-
--- Setup auto completion
-capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-
-local status_nvim_lsp, nvim_lsp = pcall(require, "lspconfig")
-if not status_nvim_lsp then
-    vim.notify("No nvim-lspconfig")
-    return
-end
-
-local function attach_func(client, bufno)
-    require("plugins.which-key").mapbuf_lsp(bufno)
-end
-
-
-mason_lsp.setup_handlers({
-    -- The first entry (without a key) will be the default handler
-    -- and will be called for each installed server that doesn't have
-    -- a dedicated handler
-
-    -- Default handler (optional)
-    function(server_name)
-        nvim_lsp[server_name].setup({
-            capabilities = capabilities,
-            on_attach = attach_func,
-        })
-    end,
-
-    -- Next, you can provide a dedicated handler for specific servers
-    ["pyright"] = function()
-        nvim_lsp.pyright.setup({
-            capabilities = capabilities,
-            settings = {
-                python = {
-                    analysis = {
-                        typeCheckingMode = "on",
-                    }
-                }
-            },
-            on_attach = attach_func,
-        })
-    end,
-
-    ["lua_ls"] = function()
-        nvim_lsp.lua_ls.setup({
-            capabilities = capabilities,
-            settings = {
-                Lua = {
-                    runtime = {
-                        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                        version = "LuaJIT",
-                    },
-                    diagnostics = {
-                        -- Get the language server to recognize the `vim` global
-                        globals = { "vim" },
-                    },
-                    workspace = {
-                        -- Make the server aware of Neovim runtime files
-                        library = vim.api.nvim_get_runtime_file("", true),
-                    },
-                    -- Do not send telemetry data containing a randomized but unique identifier
-                    telemetry = {
-                        enable = false,
-                    },
-                },
-            },
-            on_attach = attach_func,
-        })
-    end,
-
-    ["jdtls"] = function()
-        nvim_lsp.jdtls.setup({
-            cmd_env = {
-                JAVA_HOME = "/usr/lib/jvm/java-21-openjdk",
-            },
-            capabilities = capabilities,
-            on_attach = attach_func,
-            root_dir = nvim_lsp.util.root_pattern(
-                ".git",
-                "pom.xml",
-                "build.gradle",
-                "settings.gradle",
-                "src"
-            ) or vim.fn.getcwd(),
-        })
-    end,
-
-    ["texlab"] = function()
-        nvim_lsp.texlab.setup({
-            capabilities = capabilities,
-            on_attach = attach_func,
-            settings = {
-                texlab = {
-                    build = {
-                        executable = "latexmk",
-                        args = {
-                            "-xelatex",
-                            "-synctex=1",
-                            "-interaction=nonstopmode",
-                            "-file-line-error",
-                            "%f"
-                        },
-                        forwardSearchAfter = false,
-                        -- Use vimtex
-                        onSave = false,
-                    },
-                    forwardSearch = {
-                        executable = "okular",
-                        args = {
-                            "--unique",
-                            "file:%p#src:%l%f"
-                        },
-                    },
-                    auxDirectory = ".",
-                    bibtexFormatter = "texlab",
-                    chktex = {
-                        onOpenAndSave = true
-                    },
-                    diagnosticsDelay = 300,
-                    latexFormatter = "latexindent",
-                    latexindent = {
-                        modifyLineBreaks = true
-                    },
-                },
-            },
-        })
-    end,
+vim.lsp.config("lua_ls", {
+    settings = { Lua = {
+        runtime = { version = "LuaJIT" },
+        diagnostics = { globals = { "vim" } },
+        workspace = { library = vim.api.nvim_get_runtime_file("", true), checkThirdParty = false },
+        telemetry = { enable = false },
+    } },
+})
+require("mason-lspconfig").setup({
+    ensure_installed = { "gopls", "pylsp", "lua_ls", "bashls" },
+    automatic_enable = { "gopls", "pylsp", "lua_ls", "bashls" },
 })

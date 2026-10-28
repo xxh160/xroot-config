@@ -95,7 +95,6 @@ cmp.setup({
 					luasnip = "[Luasnip]",
 					buffer = "[File]",
 					path = "[Path]",
-                    latex_symbols = "[Latex]",
 				})[entry.source.name]
 				return vim_item
 			end,

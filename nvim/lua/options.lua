@@ -1,3 +1,18 @@
+-- Make Homebrew Python and Go tools available without changing the selected Node.
+local selected_node = vim.fn.exepath("node")
+local tool_paths = { vim.fn.expand("~/.go/bin") }
+if vim.fn.has("macunix") == 1 then
+    table.insert(tool_paths, 1, "/opt/homebrew/bin")
+end
+if selected_node:find("/.nvm/", 1, true) then
+    table.insert(tool_paths, 1, vim.fn.fnamemodify(selected_node, ":h"))
+end
+for i = #tool_paths, 1, -1 do
+    if vim.fn.isdirectory(tool_paths[i]) == 1 then
+        vim.env.PATH = tool_paths[i] .. ":" .. vim.env.PATH
+    end
+end
+
 -- Enable mouse in all modes
 vim.opt.mouse = 'a'
 

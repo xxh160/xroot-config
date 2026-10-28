@@ -1,0 +1,10 @@
+# On macOS, super is Command. These switch Ghostty tabs, not tmux windows.
+# On other platforms super is the system key; adapt these bindings if needed.
+keybind = super+left=previous_tab
+keybind = super+right=next_tab
+
+# Ghostty measures font size in points.
+font-size = 18
+
+# Use Dracula in both light and dark system appearances.
+theme = Dracula

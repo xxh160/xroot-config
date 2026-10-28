@@ -54,7 +54,7 @@ wk.add({
 
     { "<leader>o",       group = "open" },
     { "<leader>op",      "<cmd>NvimTreeToggle<cr>",        desc = "Toggle nvim-tree" },
-    { "<leader>os",      "<cmd>SymbolsOutline<cr>",        desc = "Toggle symbols outline" },
+    { "<leader>os",      "<cmd>Outline<cr>",        desc = "Toggle symbols outline" },
     { "<leader>ot",      "<cmd>ToggleTerm<cr>",            desc = "Toggle terminal" },
 
     { "<leader>p",       group = "project" },
@@ -77,7 +77,9 @@ wk.add({
     { "<leader>ws",      "<cmd>split<cr>",                 desc = "Split horizontally" },
     { "<leader>wv",      "<cmd>vsplit<cr>",                desc = "Split vertically" },
     { "<leader>wz",      "<cmd>Maximize<cr>",              desc = "Maximize window or not" },
-}, {
+})
+
+wk.add({
     mode = { "i" },
     silent = true,
 
@@ -86,63 +88,6 @@ wk.add({
     { "<c-k>", "<c-o>k", desc = "Cursor up" },
     { "<c-j>", "<c-o>j", desc = "Cursor down" },
 })
-
--- Latex actions
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "tex",
-    callback = function()
-        local bufno = vim.api.nvim_get_current_buf()
-        wk.add({
-            mode = { "n" },
-            buffer = bufno,
-            silent = true,
-
-            { "<leader>a",  group = "actions-latex" },
-
-            { "<leader>al", "<Plug>(vimtex-compile)",             desc = "Compile" },
-            { "<leader>aL", "<Plug>(vimtex-compile-selected)",    desc = "Compile selected" },
-            { "<leader>ak", "<Plug>(vimtex-stop)",                desc = "Stop compile" },
-            { "<leader>aK", "<Plug>(vimtex-stop-all)",            desc = "Stop all compiles" },
-            { "<leader>av", "<Plug>(vimtex-view)",                desc = "View PDF" },
-            { "<leader>ae", "<Plug>(vimtex-errors)",              desc = "Show errors" },
-            { "<leader>ao", "<Plug>(vimtex-compile-output)",      desc = "Compile output" },
-            { "<leader>as", "<Plug>(vimtex-status)",              desc = "Status" },
-            { "<leader>aS", "<Plug>(vimtex-status-all)",          desc = "Status all" },
-            { "<leader>ac", "<Plug>(vimtex-clean)",               desc = "Clean aux" },
-            { "<leader>aC", "<Plug>(vimtex-clean-full)",          desc = "Clean all" },
-            { "<leader>am", "<Plug>(vimtex-imaps-list)",          desc = "Insert mappings" },
-            { "<leader>ax", "<Plug>(vimtex-reload)",              desc = "Reload VimTeX" },
-            { "<leader>aX", "<Plug>(vimtex-reload-state)",        desc = "Reload state" },
-            { "<leader>at", "<Plug>(vimtex-toc-open)",            desc = "TOC open" },
-            { "<leader>aT", "<Plug>(vimtex-toc-toggle)",          desc = "TOC toggle" },
-            { "<leader>aq", "<Plug>(vimtex-log)",                 desc = "View log" },
-            { "<leader>ai", "<Plug>(vimtex-info)",                desc = "VimTeX Info" },
-            { "<leader>aI", "<Plug>(vimtex-info-full)",           desc = "All Info" },
-            { "<leader>ar", "<Plug>(vimtex-reverse-search)",      desc = "Reverse search" },
-            { "<leader>an", "<Plug>(vimtex-toggle-main)",         desc = "Toggle main file" },
-            { "<leader>aa", "<Plug>(vimtex-context-menu)",        desc = "Context menu" },
-        })
-    end
-})
-
--- Markdown actions
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "markdown",
-    callback = function()
-        local bufno = vim.api.nvim_get_current_buf()
-        wk.add({
-            mode = { "n" },
-            buffer = bufno,
-            silent = true,
-
-            { "<leader>a",  group = "actions-md" },
-            { "<leader>ag", "<cmd>GenTocGFM<cr>",                 desc = "Generate toc" },
-            { "<leader>ap", "<cmd>MarkdownPreview<cr>",           desc = "Markdown preview" },
-            { "<leader>ar", "<cmd>RenderMarkdown buf_toggle<cr>", desc = "Render markdown or not" },
-        })
-    end
-})
-
 
 local M = {}
 
@@ -155,7 +100,9 @@ M.mapbuf_lsp = function(bufno)
         { "<leader>c",  group = "code" },
         -- Code actions
         { "<leader>ca", "<cmd>Lspsaga code_action<cr>",                     desc = "Code actions" },
-        { "<leader>cf", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>",  desc = "Format current buffer" },
+        { "<leader>cf", function()
+            vim.lsp.buf.format({ async = true, name = "null-ls" })
+        end, desc = "Format current buffer" },
         { "<leader>ch", "<cmd>Lspsaga hover_doc<cr>",                       desc = "Hover document" },
         { "<leader>cr", "<cmd>Lspsaga rename<cr>",                          desc = "Rename" },
         -- Code symbols

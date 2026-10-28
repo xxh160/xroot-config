@@ -1,5 +1,5 @@
 local lazy_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazy_path) then
+if not vim.uv.fs_stat(lazy_path) then
     vim.fn.system({
         "git",
         "clone",
@@ -80,16 +80,6 @@ require("lazy").setup({
         end,
     },
 
-    -- Latex
-    {
-        "lervag/vimtex",
-        lazy = false, -- we don't want to lazy load VimTeX
-        -- tag = "v2.15", -- uncomment to pin to a specific release
-        init = function()
-            require("plugins.vimtex")
-        end
-    },
-
     -- Git
     {
         "tpope/vim-fugitive",
@@ -117,7 +107,8 @@ require("lazy").setup({
 
     -- Symbols outline, a tree like view for symbols
     {
-        "simrat39/symbols-outline.nvim",
+        "hedyhli/outline.nvim",
+        main = "outline",
         event = "VeryLazy",
         opts = {}
     },
@@ -125,21 +116,21 @@ require("lazy").setup({
     -- Treesitter
     {
         "nvim-treesitter/nvim-treesitter",
-        event = { "BufReadPost", "BufNewFile" },
+        branch = "main",
+        lazy = false,
         build = ":TSUpdate",
         config = function()
             require("plugins.nvim-treesitter")
         end,
     },
-    -- Debug
-    {
-        "nvim-treesitter/playground",
-        dependencies = "nvim-treesitter/nvim-treesitter",
-    },
-    -- Syntax aware text-objects, select, move, swap, and peek support
+    -- Syntax textobjects use the current standalone API.
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
+        branch = "main",
         dependencies = "nvim-treesitter/nvim-treesitter",
+        config = function()
+            require("plugins.treesitter-textobjects")
+        end,
     },
     -- Shows the context of the currently visible buffer contents
     {
@@ -149,14 +140,6 @@ require("lazy").setup({
             require("plugins.nvim-treesitter-context")
         end,
     },
-    -- Auto tag
-    {
-        "windwp/nvim-ts-autotag",
-        event = "InsertEnter",
-        dependencies = "nvim-treesitter/nvim-treesitter",
-        opts = {}
-    },
-
     -- Auto tag
     {
         "windwp/nvim-autopairs",
@@ -175,6 +158,8 @@ require("lazy").setup({
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-emoji",
             "hrsh7th/cmp-cmdline",
+            "saadparwaiz1/cmp_luasnip",
+            "L3MON4D3/LuaSnip",
         },
         config = function()
             require("plugins.nvim-cmp")
@@ -200,20 +185,21 @@ require("lazy").setup({
         "neovim/nvim-lspconfig",
     },
     {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         config = function()
             require("plugins.mason")
         end,
     },
     {
-        "williamboman/mason-lspconfig.nvim",
+        "mason-org/mason-lspconfig.nvim",
+        dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig", "hrsh7th/cmp-nvim-lsp", "folke/which-key.nvim" },
         config = function()
             require("plugins.mason-lspconfig")
         end,
     },
     {
         "folke/trouble.nvim",
-        cmd = { "TroubleToggle", "Trouble" },
+        cmd = { "Trouble" },
         -- For default options, refer to the configuration section for custom setup.
         opts = {},
     },
@@ -228,14 +214,6 @@ require("lazy").setup({
             "nvim-tree/nvim-web-devicons",
         }
     },
-    -- Dimming the highlights of unused things
-    {
-        "zbirenbaum/neodim",
-        event = "LspAttach",
-        config = function()
-            require("plugins.neodim")
-        end,
-    },
     -- Extensible UI for Neovim notifications and LSP progress messages
     {
         "j-hui/fidget.nvim",
@@ -248,9 +226,9 @@ require("lazy").setup({
     -- Load telescope plugins in telescope.lua
     {
         "nvim-telescope/telescope.nvim",
-        tag = '0.1.6',
+        branch = "master",
         event = "VeryLazy",
-        dependencies = { 'nvim-lua/plenary.nvim' },
+        dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzf-native.nvim", "xiyaowong/telescope-emoji", "nvim-telescope/telescope-ui-select.nvim", "AckslD/nvim-neoclip.lua", "natecraddock/workspaces.nvim" },
         config = function()
             require("plugins.telescope")
         end,
@@ -264,30 +242,24 @@ require("lazy").setup({
             return vim.fn.executable("make") == 1
         end,
     },
-    -- Lsp handlers: telescope.load_extension("lsp_handlers")
-    {
-        "gbrlsnchs/telescope-lsp-handlers",
-        event = "VeryLazy",
-        dependencies = "nvim-telescope/telescope.nvim",
-    },
     -- Emoji: telescope.load_extension("emoji")
     {
         "xiyaowong/telescope-emoji",
         event = "VeryLazy",
-        dependencies = "nvim-telescope/telescope.nvim",
+
     },
     -- Ui-select: telescope.load_extension("ui-select")
     {
         "nvim-telescope/telescope-ui-select.nvim",
         event = "VeryLazy",
-        dependencies = "nvim-telescope/telescope.nvim",
+
     },
     -- Sessions: telescope.load_extension("persisted")
     {
         "olimorris/persisted.nvim",
         -- Ensure the plugin loads only when a buffer has been loaded
         event = "BufReadPre",
-        dependencies = "nvim-telescope/telescope.nvim",
+
         config = function()
             require("plugins.persisted")
         end,
@@ -297,7 +269,6 @@ require("lazy").setup({
         "natecraddock/workspaces.nvim",
         dependencies = {
             "olimorris/persisted.nvim",
-            "nvim-telescope/telescope.nvim"
         },
         config = function()
             require("plugins.workspaces")
@@ -309,7 +280,7 @@ require("lazy").setup({
         event = "VeryLazy",
         dependencies = {
             { "kkharji/sqlite.lua",           module = "sqlite" },
-            { "nvim-telescope/telescope.nvim" },
+
         },
         config = function()
             require("plugins.neoclip")
@@ -319,7 +290,7 @@ require("lazy").setup({
 
     -- Nvim tree
     {
-        "kyazdani42/nvim-tree.lua",
+        "nvim-tree/nvim-tree.lua",
         event = "VeryLazy",
         dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
@@ -373,32 +344,9 @@ require("lazy").setup({
         opts = {}
     },
 
-    -- Markdown
-    -- Debug: cd ~/.local/share/nvim/lazy/markdown-preview.nvim/app && npm install
-    {
-        "iamcco/markdown-preview.nvim",
-        cmd = { "MarkdownPreview" },
-        ft = { "markdown" },
-        build = "cd app && npm install",
-    },
-    {
-        "mzlogin/vim-markdown-toc",
-        event = "VeryLazy",
-    },
-    {
-        "MeanderingProgrammer/markdown.nvim",
-        event = "FileType markdown",
-        -- Only needed if you have another plugin named markdown.nvim
-        name = "render-markdown",
-        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
-        config = function()
-            require("plugins.render-markdown")
-        end,
-    },
-
     -- Library of 40+ independent Lua modules improving overall Neovim (version 0.8 and higher) experience with minimal effort
     {
-        "echasnovski/mini.nvim",
+        "nvim-mini/mini.nvim",
         event = "VeryLazy",
         version = "*"
     },
@@ -407,7 +355,8 @@ require("lazy").setup({
     {
         "nvimtools/none-ls.nvim",
         event = "VeryLazy",
-        dependencies = "nvim-lua/plenary.nvim"
+        dependencies = "nvim-lua/plenary.nvim",
+        config = function() require("plugins.none-ls") end,
     },
 
     -- Start screen
@@ -436,10 +385,10 @@ require("lazy").setup({
         "folke/which-key.nvim",
         dependencies = {
             "nvim-tree/nvim-web-devicons",
-            "echasnovski/mini.icons",
+            "nvim-mini/mini.icons",
         },
         config = function()
             require("plugins.which-key")
         end,
     },
-})
+}, { rocks = { enabled = false } })

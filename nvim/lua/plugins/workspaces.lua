@@ -14,7 +14,7 @@ if persisted_status then
         -- vim.notify(string.format("pre: %s", vim.g.persisted_loaded_session))
         if vim.g.persisted_loaded_session and vim.g.persisted_loaded_session ~= "" then
             persisted.save({ session = vim.g.persisted_loaded_session })
-            pcall(vim.api.nvim_del_augroup_by_name, "xroot-nvim-projects")
+            pcall(vim.api.nvim_del_augroup_by_name, "xroot-nvim-project")
 
             -- Delete all of the open buffers
             vim.cmd("silent! wall")

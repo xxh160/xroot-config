@@ -1,45 +1,25 @@
--- Replace the lsp info symbol
-local signs = {
-    { name = "DiagnosticSignError", text = "" },
-    { name = "DiagnosticSignWarn", text = "" },
-    { name = "DiagnosticSignHint", text = "" },
-    { name = "DiagnosticSignInfo", text = "" },
-}
-
-for _, sign in ipairs(signs) do
-    vim.fn.sign_define(sign.name, {
-        texthl = sign.name,
-        text = sign.text,
-        numhl = ""
-    })
-end
-
--- Set the style of lsp info
 vim.diagnostic.config({
-    -- Disable virtual text, the message show after the current line
     virtual_text = false,
-    -- Show signs
-    signs = {
-        active = signs,
-    },
+    signs = { text = {
+        [vim.diagnostic.severity.ERROR] = "",
+        [vim.diagnostic.severity.WARN] = "",
+        [vim.diagnostic.severity.HINT] = "",
+        [vim.diagnostic.severity.INFO] = "",
+    } },
     update_in_insert = true,
     underline = true,
     severity_sort = true,
-    float = {
-        focusable = false,
-        source = true,
-        style = "minimal",
-        border = "rounded",
-        header = "",
-        prefix = "",
-    },
+    float = { focusable = false, source = true, border = "rounded", header = "", prefix = "" },
 })
+vim.o.winborder = "rounded"
+vim.lsp.log.set_level("WARN")
 
--- Hover
-vim.lsp.buf.hover({ border = "rounded" })
-
--- Function signature help
-vim.lsp.buf.signature_help({ border = "rounded" })
-
--- Log level
-vim.lsp.set_log_level("WARN")
+-- Native diagnostics mark unused code without overriding the Treesitter highlighter.
+local function unused_highlight()
+    vim.api.nvim_set_hl(0, "DiagnosticUnnecessary", { link = "Comment" })
+end
+vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("xroot-unused-highlight", { clear = true }),
+    callback = unused_highlight,
+})
+unused_highlight()

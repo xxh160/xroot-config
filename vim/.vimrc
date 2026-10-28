@@ -1,6 +1,11 @@
+" Define leader before plugins so their default mappings use the same prefix.
+let mapleader = "\<Space>"
+
 " === Vim Plug ===
 
-call plug#begin()
+" Install vim-plug separately; a missing manager must not break basic editing.
+if !empty(globpath(&runtimepath, 'autoload/plug.vim'))
+call plug#begin(expand('~/.vim/plugged'))
 Plug 'tpope/vim-surround'
 " Use `gcc` to comment/uncomment code
 Plug 'tpope/vim-commentary'
@@ -8,12 +13,15 @@ Plug 'zivyangll/git-blame.vim'
 " Enhanced vim mark
 Plug 'kshenoy/vim-signature'
 " Fly with <leader><leader>w/b!
-Plug 'Lokaltog/vim-easymotion'
+Plug 'easymotion/vim-easymotion'
 Plug 'mileszs/ack.vim'
 call plug#end()
+endif
 
-" Ack.vim, use ag
-if executable('ag')
+" Prefer an available search backend instead of assuming ack is installed.
+if executable('rg')
+    let g:ackprg = 'rg --vimgrep --smart-case'
+elseif executable('ag')
     let g:ackprg = "ag --vimgrep"
 endif
 
@@ -60,8 +68,8 @@ set foldenable
 set foldmethod=syntax
 set foldcolumn=0
 set foldlevel=1
-" This is useful if you want to cut or copy some text from one window and paste it in Vim
-set paste
+" Keep normal indentation enabled; modern terminals handle bracketed paste.
+set nopaste
 " Number of spaces that a <Tab> in the file counts for
 set tabstop=4
 " Number of spaces that a <Tab> counts for while performing editing
@@ -76,8 +84,6 @@ set expandtab
 
 " === Shortcuts ===
 
-" Leader
-let mapleader="\<space>"
 " Window
 nnoremap <leader>wj <c-w>j
 nnoremap <leader>wk <c-w>k
@@ -97,7 +103,10 @@ nnoremap <leader>jo <c-o>
 nnoremap <leader>ji <c-i>
 " Ctags and Cscope
 nnoremap <leader>cd <c-]>
-nnoremap <leader>cu yiw:cs find c <c-r>"<cr>
+" Cscope requires an external binary and an indexed project; keep it optional.
+if has('cscope') && executable('cscope')
+    nnoremap <leader>cu yiw:cs find c <c-r>"<cr>
+endif
 " Register
 nnoremap <leader>rl :reg<cr>
 " Mark

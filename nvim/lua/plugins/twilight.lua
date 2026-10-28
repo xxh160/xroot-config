@@ -22,5 +22,5 @@ tw.setup({
         "table",
         "if_statement",
     },
-    exclude = { "tex" }, -- exclude these filetypes
+    exclude = {},
 })

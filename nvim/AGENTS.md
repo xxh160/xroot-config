@@ -13,7 +13,7 @@
 | `lua/lazyn.lua` | lazy.nvim 引导和插件声明；负责依赖、加载时机、构建及配置回调。 |
 | `lua/theme.lua` | 选择并应用主题，在插件系统初始化之后执行。 |
 | `lua/plugins/` | 按插件组织的配置模块，由声明中的回调或显式 require 加载，不是自动扫描目录。 |
-| `references/` | 按需读取的维护方法，不复制配置参数清单。 |
+| `docs/` | 按需读取的维护方法，不复制配置参数清单。 |
 
 典型依赖：`init.lua` → `lazyn.lua` 的声明/回调 → `lua/plugins/<模块>.lua`。语言服务由插件配置层组织，通用诊断外观留在原生配置层。改动前沿真实 require 和回调确认影响范围；存在文件不代表它已生效。
 
@@ -27,7 +27,7 @@
 
 ## 验证入口
 
-按改动范围读取 [references/validation.md](references/validation.md)：
+按改动范围读取 [docs/validation.md](docs/validation.md)：
 
 - 纯文档：检查链接与 `git diff --check`。
 - Lua 配置：语法检查、加载仓库配置启动、查看消息与相关健康检查。

@@ -8,6 +8,10 @@
 - 只改任务相关内容，保留用户已有改动；不自动提交或推送。
 - 不覆盖未备份的配置，不提交凭据、缓存或历史记录。
 
+## 自维护 Skills
+
+[skills/](skills/) 存放我们自己编写和维护的 skill 源码。每个 skill 使用独立子目录，并在其中提供 `SKILL.md`。使用 skills.sh 的 `npx skills` 命令管理 skill 的安装、查看和移除。
+
 ## Git 提交约定
 
 - 提交信息采用 Conventional Commits：`type(scope): description`，scope 可省略。使用 feat、fix、docs、refactor、test、chore 等类型，scope 使用实际受影响的模块或内容区域。

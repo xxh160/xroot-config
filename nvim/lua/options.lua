@@ -40,7 +40,7 @@ vim.opt.smartcase = true
 
 -- Show line number
 vim.opt.number = true
-vim.opt.relativenumber = false
+vim.opt.relativenumber = true
 -- Cursorline
 vim.opt.cursorline = true
 -- When and how to draw the signcolumn

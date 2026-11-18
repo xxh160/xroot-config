@@ -10,7 +10,7 @@
 
 ## 自维护 Skills
 
-[skills/](skills/) 存放我们自己编写和维护的 skill 源码。每个 skill 使用独立子目录，并在其中提供 `SKILL.md`。使用 skills.sh 的 `npx skills` 命令管理 skill 的安装、查看和移除。
+仓库自维护的技能源码统一存放在 [skills/](skills/) 目录。每项技能有独立的子目录，并在其中提供 `SKILL.md`。安装、查看和移除技能时，使用 skills.sh 的 `npx skills` 命令。
 
 ## Git 提交约定
 

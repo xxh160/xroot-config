@@ -1,0 +1,10 @@
+{
+  "workbench.colorTheme": "One Dark Pro",
+  "window.zoomLevel": 1,
+  "editor.fontSize": 14,
+  "editor.lineHeight": 22,
+  "editor.minimap.enabled": false,
+  "[go]": {
+    "editor.formatOnSave": true
+  }
+}
